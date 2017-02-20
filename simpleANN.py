@@ -6,14 +6,11 @@ tf.set_random_seed(916)
 # Download images and labels into mnist.test and mnist.train
 mnist = read_data_sets("data", one_hot=True, reshape=False, validation_size=0)
 
-# You can index images on the batches by putting the first dimension NONE
-X = tf.placeholder(tf.float32, [None, 28, 28, 1])
 
-Y_ = tf.placeholder(tf.float32, [None, 10])
-
+X = tf.placeholder(tf.float32, [None, 28, 28, 1]) # You can index images on the batches by putting the first dimension NONE
 W = tf.Variable(tf.zeros([784, 10]))
-
 b = tf.Variable(tf.zeros([10]))
+Y_ = tf.placeholder(tf.float32, [None, 10]) # correct answers
 
 # Our data is not flattened yet... so we flat and call it XX
 # Reshape to -1 means to select the dimension that will preserve the number of elements.
@@ -34,10 +31,10 @@ cross_entropy = -tf.reduce_mean(Y_ * tf.log(Y)) * 1000.0
 correct_prediction = tf.equal(tf.argmax(Y, 1), tf.argmax(Y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-# training, learning rate = 0.005
+# optimser, training, learning rate = 0.005
 train_step = tf.train.GradientDescentOptimizer(0.005).minimize(cross_entropy)
 
-# visulatisation
+# visualisation
 allweights = tf.reshape(W, [-1])
 allbiases = tf.reshape(b, [-1])
 I = helperVisualisation.tf_format_mnist_images(X, Y, Y_)  # assembles 10x10 images by default
